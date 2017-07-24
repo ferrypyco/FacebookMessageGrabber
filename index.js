@@ -15,7 +15,7 @@ let db = mysql.createConnection({
 
 db.connect()
 
-var timestamp = undefinedca
+var timestamp = undefined
 
 chat({
     email: process.env.FB_USERNAME,
