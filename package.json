@@ -11,5 +11,8 @@
     "dotenv": "^4.0.0",
     "facebook-chat-api": "^1.4.0",
     "mysql": "^2.13.0"
+  },
+  "scripts": {
+    "postinstall": "db-migrate up"
   }
 }
