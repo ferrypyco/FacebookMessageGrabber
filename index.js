@@ -14,6 +14,8 @@ let db = mysql.createConnection({
 
 db.connect()
 
+db.query('SET NAMES utf8')
+
 var timestamp = 1500756832559
 
 chat({
