@@ -1,0 +1,15 @@
+{
+  "name": "FacebookMessageGrabber",
+  "version": "1.0.0",
+  "description": "Get all messages from messanger conversation",
+  "main": "index.js",
+  "author": "ImJustToNy <imtony@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "db-migrate": "^0.10.0-beta.21",
+    "db-migrate-mysql": "^1.1.10",
+    "dotenv": "^4.0.0",
+    "facebook-chat-api": "^1.4.0",
+    "mysql": "^2.13.0"
+  }
+}
