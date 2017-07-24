@@ -64,6 +64,7 @@ function getMessages (api) {
 
             getMessages(api)
         } else {
+            console.log('We don\'t have more messages!')
             db.end()
         }
     })
