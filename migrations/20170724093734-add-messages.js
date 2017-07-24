@@ -18,7 +18,7 @@ exports.up = function(db, callback) {
   db.createTable('messages', {
     id: { type: 'int', primaryKey: true, autoIncrement: true},
     type: 'string',
-    body: 'longtext',
+    body: 'text',
     image_url: 'string',
     image_preview: 'string',
     sender_id: 'bigint',
