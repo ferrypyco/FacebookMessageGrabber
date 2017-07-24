@@ -21,9 +21,9 @@ exports.up = function(db, callback) {
     body: 'string',
     image_url: 'string',
     image_preview: 'string',
-    sender_id: 'int',
+    sender_id: 'bigint',
     sender_name: 'string',
-    timestamp: 'int'
+    timestamp: 'bigint'
   }, callback)
 }
 
