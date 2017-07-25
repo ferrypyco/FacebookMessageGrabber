@@ -4,8 +4,6 @@ const async = require('async')
 
 require('dotenv').config()
 
-const threadID = process.env.CHAT_ID
-
 cost db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -29,7 +27,7 @@ chat({
 
 function getMessages (api) {
     console.log('Getting messages...')
-    api.getThreadHistory(threadID, 50, timestamp, (err, history) => {
+    api.getThreadHistory(process.env.CHAT_ID, 50, timestamp, (err, history) => {
         if (err) return console.error(err)
 
         if (timestamp != undefined) history.pop()
