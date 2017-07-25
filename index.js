@@ -56,7 +56,7 @@ function getMessages (api) {
                 }, err => {
                     callback(null, !err)
                 })
-            }, (err, result) => {
+            }, err => {
                 if (err) log.error(err)
 
                 getMessages(api)
