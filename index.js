@@ -1,7 +1,7 @@
 const chat = require('facebook-chat-api')
 const mysql = require('mysql')
 
-const threadID = 1675948962619089
+const threadID = process.env.FB_CHAT
 
 require('dotenv').config()
 
