@@ -1,11 +1,12 @@
 const chat = require('facebook-chat-api')
 const mysql = require('mysql')
+const async = require('async')
 
 require('dotenv').config()
 
 const threadID = process.env.CHAT_ID
 
-let db = mysql.createConnection({
+var db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -37,30 +38,25 @@ function getMessages (api) {
 
             timestamp = history[0].timestamp
 
-            history.forEach((message) => {
-                if (message.attachments.length) {
-                    message.attachments.forEach((attachment) => {
-                        console.log('[' + message.senderName + '] attachment')
-                        db.query('INSERT INTO messages SET ?', {
-                            type: attachment.type,
-                            image_url: attachment.largePreviewUrl,
-                            image_preview: attachment.thumbnailUrl,
-                            sender_id: message.senderID,
-                            sender_name: message.senderName,
-                            timestamp: message.timestamp
-                        })
-                    })
-                } else {
-                    console.log('[' + message.senderName + '] ' + message.body)
-                    db.query('INSERT INTO messages SET ?', {
-                        type: 'message',
-                        body: message.body,
-                        sender_id: message.senderID,
-                        sender_name: message.senderName,
-                        timestamp: message.timestamp
-                    })
-                }
-            }).then(() => {
+            async.every(history, (message, callback) => {
+                console.log('[' + message.senderName + '] ' + ((message.attachments.length) ? message.attachments[0].largePreviewUrl : message.body))
+
+                db.query('INSERT INTO messages SET ?', {
+                    type: (message.attachments.length) ? 'media' : 'message',
+                    body: message.body,
+                    sender_id: message.senderID,
+                    sender_name: message.senderName,
+                    image_url: (message.attachments.length) ? message.attachments[0].largePreviewUrl : null,
+                    image_preview: (message.attachments.length) ? message.attachments[0].thumbnailUrl : null,
+                    sender_id: message.senderID,
+                    sender_name: message.senderName,
+                    timestamp: message.timestamp
+                }, error => {
+                    callback(null, !error)
+                })
+            }, (err, result) => {
+                if (err) console.log(err)
+
                 getMessages(api)
             })
         } else {
