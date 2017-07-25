@@ -1,9 +1,9 @@
 const chat = require('facebook-chat-api')
 const mysql = require('mysql')
 
-const threadID = process.env.CHAT_ID
-
 require('dotenv').config()
+
+const threadID = process.env.CHAT_ID
 
 let db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -60,9 +60,7 @@ function getMessages (api) {
                         timestamp: message.timestamp
                     })
                 }
-            })
-
-            getMessages(api)
+            }).then(getMessages(api))
         } else {
             console.log('We don\'t have more messages!')
             db.end()
