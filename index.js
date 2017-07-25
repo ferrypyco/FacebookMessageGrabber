@@ -1,10 +1,13 @@
 const chat = require('facebook-chat-api')
 const mysql = require('mysql')
 const async = require('async')
+const log = require('winston')
+
+log.info('FacebookMessageGrabber is booting up...')
 
 require('dotenv').config()
 
-cost db = mysql.createConnection({
+const db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -20,15 +23,16 @@ chat({
     email: process.env.FB_USERNAME,
     password: process.env.FB_PASSWORD
 }, (err, api) => {
-    if (err) return console.error(err)
+    if (err) return log.error(err)
 
     getMessages(api)
 })
 
 function getMessages (api) {
-    console.log('Getting messages...')
+    log.info('Getting messages...')
+
     api.getThreadHistory(process.env.CHAT_ID, 50, timestamp, (err, history) => {
-        if (err) return console.error(err)
+        if (err) return log.error(err)
 
         if (timestamp != undefined) history.pop()
 
@@ -39,7 +43,7 @@ function getMessages (api) {
             async.every(history, (message, callback) => {
                 let isMedia = message.attachments.length
 
-                console.log('[' + message.senderName + '] ' + (isMedia ? message.attachments[0].largePreviewUrl : message.body))
+                log.info('[' + message.senderName + '] ' + (isMedia ? message.attachments[0].largePreviewUrl : message.body))
 
                 db.query('INSERT INTO messages SET ?', {
                     type: isMedia ? 'media' : 'message',
@@ -49,16 +53,16 @@ function getMessages (api) {
                     image_url: isMedia ? message.attachments[0].largePreviewUrl : null,
                     image_preview: isMedia ? message.attachments[0].thumbnailUrl : null,
                     timestamp: message.timestamp
-                }, error => {
-                    callback(null, !error)
+                }, err => {
+                    callback(null, !err)
                 })
             }, (err, result) => {
-                if (err) console.log(err)
+                if (err) log.error(err)
 
                 getMessages(api)
             })
         } else {
-            console.log('We don\'t have more messages!')
+            log.info('We don\'t have more messages!')
             db.end()
         }
     })
