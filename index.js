@@ -27,7 +27,7 @@ chat({
 })
 
 function getMessages (api) {
-    console.log('Pobieram wiadomosci...')
+    console.log('Getting messages...')
     api.getThreadHistory(threadID, 200, timestamp, (err, history) => {
         if (err) return console.error(err)
 
@@ -40,7 +40,7 @@ function getMessages (api) {
             history.forEach((message) => {
                 if (message.attachments.length) {
                     message.attachments.forEach((attachment) => {
-                        console.log('Wrzucam attachmenta')
+                        console.log('[' + message.senderName + '] attachment')
                         db.query('INSERT INTO messages SET ?', {
                             type: attachment.type,
                             image_url: attachment.largePreviewUrl,
@@ -51,7 +51,7 @@ function getMessages (api) {
                         })
                     })
                 } else {
-                    console.log('Wrzucam wiadomosc', message.body)
+                    console.log('[' + message.senderName + '] ' + message.body)
                     db.query('INSERT INTO messages SET ?', {
                         type: 'message',
                         body: message.body,
