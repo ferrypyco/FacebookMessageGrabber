@@ -6,7 +6,7 @@ require('dotenv').config()
 
 const threadID = process.env.CHAT_ID
 
-var db = mysql.createConnection({
+cost db = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -16,7 +16,7 @@ var db = mysql.createConnection({
 
 db.connect()
 
-var timestamp = undefined
+let timestamp = undefined
 
 chat({
     email: process.env.FB_USERNAME,
@@ -39,7 +39,7 @@ function getMessages (api) {
             timestamp = history[0].timestamp
 
             async.every(history, (message, callback) => {
-                const isMedia = message.attachments.length
+                let isMedia = message.attachments.length
 
                 console.log('[' + message.senderName + '] ' + (isMedia ? message.attachments[0].largePreviewUrl : message.body))
 
