@@ -39,15 +39,17 @@ function getMessages (api) {
             timestamp = history[0].timestamp
 
             async.every(history, (message, callback) => {
-                console.log('[' + message.senderName + '] ' + ((message.attachments.length) ? message.attachments[0].largePreviewUrl : message.body))
+                cost isMedia = message.attachments.length
+
+                console.log('[' + message.senderName + '] ' + (isMedia ? message.attachments[0].largePreviewUrl : message.body))
 
                 db.query('INSERT INTO messages SET ?', {
-                    type: (message.attachments.length) ? 'media' : 'message',
-                    body: message.body,
+                    type: isMedia ? 'media' : 'message',
+                    body: isMedia ? null : message.body,
                     sender_id: message.senderID,
                     sender_name: message.senderName,
-                    image_url: (message.attachments.length) ? message.attachments[0].largePreviewUrl : null,
-                    image_preview: (message.attachments.length) ? message.attachments[0].thumbnailUrl : null,
+                    image_url: isMedia ? message.attachments[0].largePreviewUrl : null,
+                    image_preview: isMedia ? message.attachments[0].thumbnailUrl : null,
                     sender_id: message.senderID,
                     sender_name: message.senderName,
                     timestamp: message.timestamp
