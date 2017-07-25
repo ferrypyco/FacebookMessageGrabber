@@ -60,7 +60,9 @@ function getMessages (api) {
                         timestamp: message.timestamp
                     })
                 }
-            }).then(getMessages(api))
+            }).then(() => {
+                getMessages(api)
+            })
         } else {
             console.log('We don\'t have more messages!')
             db.end()
