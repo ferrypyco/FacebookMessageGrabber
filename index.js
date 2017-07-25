@@ -50,8 +50,6 @@ function getMessages (api) {
                     sender_name: message.senderName,
                     image_url: isMedia ? message.attachments[0].largePreviewUrl : null,
                     image_preview: isMedia ? message.attachments[0].thumbnailUrl : null,
-                    sender_id: message.senderID,
-                    sender_name: message.senderName,
                     timestamp: message.timestamp
                 }, error => {
                     callback(null, !error)
