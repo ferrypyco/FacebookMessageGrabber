@@ -41,7 +41,7 @@ function getMessages (api) {
             timestamp = history[0].timestamp
 
             async.every(history, (message, callback) => {
-                let isMedia = message.attachments.length
+                const isMedia = message.attachments.length
 
                 log.info('[' + message.senderName + '] ' + (isMedia ? message.attachments[0].largePreviewUrl : message.body))
 
