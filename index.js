@@ -28,7 +28,7 @@ chat({
 
 function getMessages (api) {
     console.log('Pobieram wiadomosci...')
-    api.getThreadHistory(threadID, 50, timestamp, (err, history) => {
+    api.getThreadHistory(threadID, 200, timestamp, (err, history) => {
         if (err) return console.error(err)
 
         if (timestamp != undefined) history.pop()
