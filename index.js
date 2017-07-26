@@ -20,6 +20,8 @@ db.connect()
 let timestamp
 
 db.query('SELECT timestamp FROM messages ORDER BY timestamp ASC LIMIT 1', (err, res) => {
+    if (err) return log.error(err)
+
     timestamp = res[0].timestamp
 })
 
