@@ -17,7 +17,11 @@ const db = mysql.createConnection({
 
 db.connect()
 
-let timestamp = undefined
+let timestamp
+
+db.query('SELECT timestamp FROM messages ORDER BY timestamp ASC LIMIT 1', (err, res) => {
+    timestamp = res[0].timestamp
+})
 
 chat({
     email: process.env.FB_USERNAME,
